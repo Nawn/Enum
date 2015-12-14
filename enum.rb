@@ -32,7 +32,24 @@ module Enumerable
     end
     true
   end
+  
+  
+  def my_any?
+    self.my_each do |value|
+      return true if yield(value)
+    end
+    
+    false
+  end
+  
+  def my_none?
+    self.my_each do |value|
+      return false if yield(value)
+    end
+    
+    true
+  end
 end
 
 
-puts [2,4,6,8].my_all? {|num| num % 2 == 0}
+puts [1,3,4,9].my_none? {|num| num % 2 == 0}
