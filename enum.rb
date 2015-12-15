@@ -49,7 +49,32 @@ module Enumerable
     
     true
   end
+  
+  def my_count(arg=nil)
+    if arg
+			self.my_select { |i| i == arg }.size
+		elsif block_given?
+			self.my_select { |i| yield(i) }.size
+		else
+			self.size
+		end
+  end
+  
+  def my_map
+    self.my_each_with_index do |value, index|
+      self[index] = yield(value)
+    end
+    self
+  end
+  
+  def my_inject(total = 0)
+    self.my_each do |value|
+      total += yield(total, value)
+    end
+  end
 end
 
 
-puts [1,3,4,9].my_none? {|num| num % 2 == 0}
+puts (5..10).inject {|sum,n| sum + n}
+
+puts (5..10).inject(1) {|product, n| product * n}
