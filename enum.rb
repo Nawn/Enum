@@ -69,12 +69,16 @@ module Enumerable
   
   def my_inject(total = 0)
     self.my_each do |value|
-      total += yield(total, value)
+      total = yield(total, value)
     end
+    
+    total
   end
 end
 
+def multiply_els (input_array)
+  input_array.my_inject(1) {|product, n| product * n}
+end
 
-puts (5..10).inject {|sum,n| sum + n}
 
-puts (5..10).inject(1) {|product, n| product * n}
+puts multiply_els([2,4,5])
