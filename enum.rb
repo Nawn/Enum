@@ -60,11 +60,20 @@ module Enumerable
 		end
   end
   
-  def my_map
-    self.my_each_with_index do |value, index|
-      self[index] = yield(value)
+  def my_map (proc = nil)
+    temp_array = self.to_a
+    
+    if proc && block_given?
+      temp_array.my_each_with_index do |value, index|
+        temp_array[index] = yield(proc.call(value))
+      end
+    elsif proc
+      temp_array.my_each_with_index do |value, index|
+        temp_array[index] = proc.call(value)
+      end
     end
-    self
+    
+    temp_array
   end
   
   def my_inject(total = 0)
@@ -80,5 +89,8 @@ def multiply_els (input_array)
   input_array.my_inject(1) {|product, n| product * n}
 end
 
+example_proc = Proc.new do |value|
+  value ** 2
+end
 
-puts multiply_els([2,4,5])
+puts ([1,3,5].my_map)
